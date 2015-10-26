@@ -10,5 +10,7 @@ namespace Training.Service.Interfaces
         Match InsertMatch(Match match);
 
         Match UpdateMatch(Match match);
+
+        void DeleteMatch(int id);
     }
 }

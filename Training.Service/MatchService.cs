@@ -73,5 +73,19 @@ namespace Training.Service
 
             return existingMatch;
         }
+
+        public void DeleteMatch(int id)
+        {
+            var existingMatch = unitOfWork.Repository<Match>().Query(x => x.Id == id).Select().FirstOrDefault();
+
+            if (existingMatch == null)
+            {
+                throw new ArgumentException();
+            }
+
+            existingMatch.IsDeleted = true;
+
+            unitOfWork.SaveChanges();
+        }
     }
 }

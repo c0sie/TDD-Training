@@ -12,7 +12,6 @@ using Match = Training.Entities.Models.Match;
 namespace Training.Tests.ServiceTests
 {
     [TestFixture]
-
     public class MatchServiceTests : TestBase
     {
         private MatchService service;
@@ -70,11 +69,11 @@ namespace Training.Tests.ServiceTests
             // Act
             var actual = service.GetTeamsByLeague(leagueId).ToList();
 
-            // Assert
+            // Assert - AreEqual is for int comparison whereas IsTrue is for booleans.
             Assert.AreEqual(3, actual.Count, "actual.Count failed.");
-            Assert.IsTrue(actual[0].LeagueId == 2, "actual[0] failed.");
-            Assert.IsTrue(actual[1].LeagueId == 2, "actual[1] failed.");
-            Assert.IsTrue(actual[2].LeagueId == 2, "actual[2] failed.");
+            Assert.AreEqual(2, actual[0].LeagueId, "actual[0] failed.");
+            Assert.AreEqual(2, actual[1].LeagueId, "actual[1] failed.");
+            Assert.AreEqual(2, actual[2].LeagueId, "actual[2] failed.");
         }
 
         [Test]
@@ -181,7 +180,6 @@ namespace Training.Tests.ServiceTests
             var actual = service.UpdateMatch(match);
         }
 
-        // Update Match results should call save changes and update?
         [Test]
         public void UpdateMatch_Should_Update_Correct_Match_And_Call_SaveChanges_Only_Once()
         {
@@ -217,15 +215,73 @@ namespace Training.Tests.ServiceTests
             // I want to call the object back from the mock database to confirm that the data has been updated.
             var updatedMatch = MockUnitOfWork.Object.Repository<Match>().Query(x => x.Id == 1).Select().First();
 
-            Assert.AreEqual(3, updatedMatch.HomeTeamId);
-            Assert.AreEqual(4, updatedMatch.HomeScore);
-            Assert.AreEqual(4, updatedMatch.AwayTeamId);
-            Assert.AreEqual(5, updatedMatch.AwayScore);
-            Assert.AreEqual(new DateTime(2014, 09, 13, 08, 45, 30), updatedMatch.MatchDateTime);
-            Assert.AreEqual(2, updatedMatch.LeagueId);
+            Assert.AreEqual(3, updatedMatch.HomeTeamId, "HomeTeamId has not been updated.");
+            Assert.AreEqual(4, updatedMatch.HomeScore, "HomeScore has not been updated.");
+            Assert.AreEqual(4, updatedMatch.AwayTeamId, "AwayTeamId has not been updated.");
+            Assert.AreEqual(5, updatedMatch.AwayScore, "AwayTeamId has not been updated.");
+            Assert.IsTrue(updatedMatch.MatchDateTime == new DateTime(2014, 09, 13, 08, 45, 30), "MatchDateTime has not been updated.");
+            Assert.AreEqual(2, updatedMatch.LeagueId, "LeagueId has not been updated.");
         }
 
-        // TODO: List
-        // Delete match deletes match
+        [Test]
+        [ExpectedException(typeof(ArgumentException))]
+        public void DeleteMatch_Should_Throw_ArguementException_If_MatchId_Does_Not_Exist()
+        {
+            // Arrange
+            const int matchToDeleteId = 3;
+            var mockLeagueData = new List<League> { new League { Id = 1, IsDeleted = false } };
+            var mockTeamData = new List<Team>
+            {
+                new Team { Id = 1, LeagueId = 1 },
+                new Team { Id = 2, LeagueId = 1 }
+            };
+            var mockMatchData = new List<Match>
+            {
+                new Match { Id = 1, HomeTeamId = 1, HomeScore = 1, AwayTeamId = 2, AwayScore = 2, MatchDateTime = new DateTime(2015, 10, 26, 09, 00, 00), LeagueId = 1 },
+                new Match { Id = 2, HomeTeamId = 2, HomeScore = 4, AwayTeamId = 1, AwayScore = 3, MatchDateTime = new DateTime(2014, 04, 21, 08, 30, 30), LeagueId = 1 }
+            };
+
+            SetupMockRepository(mockLeagueData);
+            SetupMockRepository(mockTeamData);
+            SetupMockRepository(mockMatchData);
+
+            // Act
+            service.DeleteMatch(matchToDeleteId);
+        }
+
+        [Test]
+        public void DeleteMatch_Should_Set_IsDeleted_To_True_On_Correct_Match()
+        {
+            // Arrange
+            const int matchToDeleteId = 1;
+            var mockLeagueData = new List<League> { new League { Id = 1, IsDeleted = false } };
+            var mockTeamData = new List<Team>
+            {
+                new Team { Id = 1, LeagueId = 1 },
+                new Team { Id = 2, LeagueId = 1 }
+            };
+            var mockMatchData = new List<Match>
+            {
+                new Match { Id = 1, HomeTeamId = 1, HomeScore = 1, AwayTeamId = 2, AwayScore = 2, MatchDateTime = new DateTime(2015, 10, 26, 09, 00, 00), LeagueId = 1 },
+                new Match { Id = 2, HomeTeamId = 2, HomeScore = 4, AwayTeamId = 1, AwayScore = 3, MatchDateTime = new DateTime(2014, 04, 21, 08, 30, 30), LeagueId = 1 }
+            };
+
+            SetupMockRepository(mockLeagueData);
+            SetupMockRepository(mockTeamData);
+            SetupMockRepository(mockMatchData);
+
+            // Pre-Act assertion of IsDeleted flag being false.
+            var match = MockUnitOfWork.Object.Repository<Match>().Query(x => x.Id == matchToDeleteId).Select().First();
+
+            Assert.IsTrue(match.IsDeleted == false, "IsDeleted should be false but is true before DeleteMatch call.");
+
+            // Act
+            service.DeleteMatch(matchToDeleteId);
+
+            var deletedMatch = MockUnitOfWork.Object.Repository<Match>().Query(x => x.Id == matchToDeleteId).Select().First();
+
+            // Assert
+            Assert.IsTrue(deletedMatch.IsDeleted, "IsDeleted is not true after DeleteMatch call.");
+        }
     }
 }

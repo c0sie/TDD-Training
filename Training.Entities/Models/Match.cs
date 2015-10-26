@@ -30,6 +30,8 @@ namespace Training.Entities.Models
         [Required]
         public DateTime MatchDateTime { get; set; }
 
+        public bool IsDeleted { get; set; }
+
         public virtual Team HomeTeam { get; set; }
 
         public virtual Team AwayTeam { get; set; }
