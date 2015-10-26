@@ -97,6 +97,10 @@
     <Compile Include="Migrations\201510191452262_IdentityRefactor.Designer.cs">
       <DependentUpon>201510191452262_IdentityRefactor.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201510261457043_AddLeagueIdToMatch.cs" />
+    <Compile Include="Migrations\201510261457043_AddLeagueIdToMatch.Designer.cs">
+      <DependentUpon>201510261457043_AddLeagueIdToMatch.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\League.cs" />
     <Compile Include="Models\Match.cs" />
@@ -119,6 +123,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201510191452262_IdentityRefactor.resx">
       <DependentUpon>201510191452262_IdentityRefactor.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201510261457043_AddLeagueIdToMatch.resx">
+      <DependentUpon>201510261457043_AddLeagueIdToMatch.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
