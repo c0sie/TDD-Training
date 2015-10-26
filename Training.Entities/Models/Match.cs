@@ -9,9 +9,11 @@ namespace Training.Entities.Models
         [Key]
         public int Id { get; set; }
 
+        [Required]
         [ForeignKey("HomeTeam")]
         public int HomeTeamId { get; set; }
 
+        [Required]
         [ForeignKey("AwayTeam")]
         public int AwayTeamId { get; set; }
 
@@ -22,10 +24,16 @@ namespace Training.Entities.Models
         public int AwayScore { get; set; }
 
         [Required]
+        [ForeignKey("League")]
+        public int LeagueId { get; set; }
+
+        [Required]
         public DateTime MatchDateTime { get; set; }
 
         public virtual Team HomeTeam { get; set; }
 
         public virtual Team AwayTeam { get; set; }
+
+        public virtual League League { get; set; }
     }
 }

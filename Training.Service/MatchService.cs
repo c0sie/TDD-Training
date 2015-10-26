@@ -19,7 +19,6 @@ namespace Training.Service
 
         public IEnumerable<Team> GetTeamsByLeague(int id)
         {
-            // Get list of all active leagues.
             var leagues = unitOfWork.Repository<League>().Query(x => !x.IsDeleted && x.Id == id).Select();
 
             // If all the league Id's do not match the id passed in then the id is invalid - throw exception.
@@ -36,10 +35,9 @@ namespace Training.Service
         public Match InsertMatch(Match match)
         {
             var existingMatch = unitOfWork.Repository<Match>()
-                .Query(x =>
-                        x.HomeTeamId == match.HomeTeamId && x.AwayTeamId == match.AwayTeamId &&
-                        x.MatchDateTime == match.MatchDateTime)
-                .Select().ToList()
+                .Query(x => x.HomeTeamId == match.HomeTeamId && x.AwayTeamId == match.AwayTeamId && x.MatchDateTime == match.MatchDateTime)
+                .Select()
+                .ToList()
                 .FirstOrDefault();
 
             if (existingMatch != null)
@@ -51,6 +49,29 @@ namespace Training.Service
             unitOfWork.SaveChanges();
 
             return match;
+        }
+
+        public Match UpdateMatch(Match match)
+        {
+            var existingMatch = unitOfWork.Repository<Match>().Query(x => x.Id == match.Id).Select().FirstOrDefault();
+
+            if (existingMatch == null)
+            {
+                throw new ArgumentException();
+            }
+
+            // TODO: Setup Automapper for this.
+            existingMatch.HomeTeamId = match.HomeTeamId;
+            existingMatch.HomeScore = match.HomeScore;
+            existingMatch.AwayTeamId = match.AwayTeamId;
+            existingMatch.AwayScore = match.AwayScore;
+            existingMatch.MatchDateTime = match.MatchDateTime;
+            existingMatch.LeagueId = match.LeagueId;
+
+            unitOfWork.Repository<Match>().Update(existingMatch);
+            unitOfWork.SaveChanges();
+
+            return existingMatch;
         }
     }
 }
