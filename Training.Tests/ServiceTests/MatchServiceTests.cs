@@ -31,11 +31,11 @@ namespace Training.Tests.ServiceTests
             // Arrange
             const int leagueId = 9;
 
-            var mockTeamData = new List<Team> { new Team { Id = 1, LeagueId = 2 } };
             var mockLeagueData = new List<League> { new League { Id = 2, IsDeleted = false } };
+            var mockTeamData = new List<Team> { new Team { Id = 1, LeagueId = 2 } };
 
-            SetupMockRepository(mockTeamData);
             SetupMockRepository(mockLeagueData);
+            SetupMockRepository(mockTeamData);
 
             // Act
             service.GetTeamsByLeague(leagueId);
@@ -283,5 +283,7 @@ namespace Training.Tests.ServiceTests
             // Assert
             Assert.IsTrue(deletedMatch.IsDeleted, "IsDeleted is not true after DeleteMatch call.");
         }
+
+        // TODO: GetRemainingTeamsByLeague (only initial team has been selected?)
     }
 }

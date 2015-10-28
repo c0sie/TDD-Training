@@ -57,7 +57,7 @@ namespace Training.Service
 
             if (existingMatch == null)
             {
-                throw new ArgumentException();
+                throw new ArgumentException("MatchId does not exist in the database.");
             }
 
             // TODO: Setup Automapper for this.
@@ -80,7 +80,7 @@ namespace Training.Service
 
             if (existingMatch == null)
             {
-                throw new ArgumentException();
+                throw new ArgumentException("MatchId does not exist in the database.");
             }
 
             existingMatch.IsDeleted = true;
