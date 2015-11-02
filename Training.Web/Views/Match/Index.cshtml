@@ -1,0 +1,7 @@
+﻿@model Training.Web.Models.MatchIndexViewModel
+
+@{
+    Layout = null;
+}
+
+@Html.DropDownListFor(x => x.SelectedTeamId, Model.Teams.Select(x => new SelectListItem { Text = x.Name, Value = x.Id.ToString(), Selected = x.Id == Model.SelectedTeamId }), "Select")

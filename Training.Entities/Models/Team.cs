@@ -9,6 +9,8 @@ namespace Training.Entities.Models
         [Key]
         public int Id { get; set; }
 
+        public string Name { get; set; }
+
         [ForeignKey("League")]
         public int? LeagueId { get; set; }
 

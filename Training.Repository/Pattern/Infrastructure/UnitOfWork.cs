@@ -19,9 +19,9 @@ namespace Training.Repository.Pattern.Infrastructure
         private ObjectContext objectContext;
         private DbTransaction transaction;
 
-        public UnitOfWork(ObjectContext objectContext)
+        public UnitOfWork(DbContext dbContext)
         {
-            this.objectContext = objectContext;
+            dataContext = dbContext;
         }
 
         public void Dispose()
