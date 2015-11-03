@@ -24,7 +24,7 @@ namespace Training.Service
             // If all the league Id's do not match the id passed in then the id is invalid - throw exception.
             if (leagues.All(x => x.Id != id))
             {
-                throw new ArgumentException("Invalid leagueId", id.ToString());
+                throw new ArgumentException("The selected league is invalid.", id.ToString());
             }
 
             var teams = unitOfWork.Repository<Team>().Query(x => x.LeagueId == id).Select();

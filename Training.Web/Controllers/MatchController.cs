@@ -12,21 +12,22 @@ namespace Training.Web.Controllers
         public MatchController(IMatchService service)
         {
             this.service = service;
-            // TODO: Time to learn DI!!
         }
 
-        public ActionResult Index(int leagueId = 1)
+        public ActionResult Index(int id)
         {
             var model = new MatchIndexViewModel();
 
             try
             {
-                model.Teams = service.GetTeamsByLeague(leagueId);
+                model.Teams = service.GetTeamsByLeague(id);
             }
-            catch (ArgumentException)
+            catch (ArgumentException ex)
             {
-                ModelState.AddModelError(string.Empty, "The league you have chosen in invalid, please select another league.");
+                ModelState.AddModelError(string.Empty, ex.Message);
             }
+
+            model.LeagueId = id;
 
             return View(model);
         }

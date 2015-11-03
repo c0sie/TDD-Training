@@ -9,7 +9,6 @@ namespace Training.Service.Exceptions
 
         public DuplicateMatchException()
         {
-
         }
 
         public DuplicateMatchException(int matchId)
