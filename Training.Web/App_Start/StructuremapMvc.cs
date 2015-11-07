@@ -28,7 +28,7 @@ namespace Training.Web.App_Start
 
     using Microsoft.Web.Infrastructure.DynamicModuleHelper;
 
-    using Training.Web.DependencyResolution;
+    using DependencyResolution;
 
     using StructureMap;
 

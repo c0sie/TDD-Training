@@ -14,6 +14,7 @@ namespace Training.Web.Controllers
             this.service = service;
         }
 
+        [HttpGet]
         public ActionResult Index(int id)
         {
             var model = new MatchIndexViewModel();
@@ -31,5 +32,28 @@ namespace Training.Web.Controllers
 
             return View(model);
         }
+
+        //[HttpPost]
+        //public ActionResult Index(MatchIndexViewModel model)
+        //{
+        //    if (!ModelState.IsValid)
+        //    {
+        //        return View(model);
+        //    }
+
+        //    var match = new Match
+        //    {
+        //        HomeTeamId = model.SelectedHomeTeamId,
+        //        HomeScore = model.HomeTeamScore.GetValueOrDefault(),
+        //        AwayTeamId = model.SelectedAwayTeamId,
+        //        AwayScore = model.AwayTeamScore.GetValueOrDefault(),
+        //        LeagueId = model.LeagueId,
+        //        MatchDateTime = DateTime.Now
+        //    };
+
+        //    service.InsertMatch(match);
+
+        //    return RedirectToAction("Index", new { id = model.LeagueId });
+        //}
     }
 }

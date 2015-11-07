@@ -101,6 +101,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Identity\TrainingUserStore.cs" />
     <Compile Include="Migrations\201510160820099_InitialSetUp.cs" />
     <Compile Include="Migrations\201510160820099_InitialSetUp.Designer.cs">
       <DependentUpon>201510160820099_InitialSetUp.cs</DependentUpon>
@@ -128,6 +129,7 @@
     <Compile Include="Models\UserLogin.cs" />
     <Compile Include="Models\UserRole.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Identity\TrainingUserManager.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
